@@ -3,23 +3,17 @@ package com.example.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
-import com.example.popularmovies.com.example.popularmovies.tmdb.MoviePoster;
+import com.example.popularmovies.tmdb.MoviePoster;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,7 +44,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent detailIntent = new Intent(getContext(), DetailActivity.class);
-                detailIntent.putExtra("movieId", adapter.getItem(position).getMovieId());
+                detailIntent.putExtra("movieId", id);
                 startActivity(detailIntent);
             }
         });
@@ -81,10 +75,16 @@ public class MainActivityFragment extends Fragment {
                 v = vi.inflate(R.layout.grid_item_poster, null);
                 ImageView imgView = (ImageView)v;
 
-                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/" + getItem(position).getPosterPath())).into(imgView);
+                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
+                        + getItem(position).getPosterPath())).into(imgView);
             }
 
             return v;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return (long)getItem(position).getMovieId();
         }
     }
 }
