@@ -46,6 +46,14 @@ public class MainActivityFragment extends Fragment {
         GridView grid = (GridView)rootView.findViewById(R.id.grid_posters);
         adapter = new PosterListAdapter(getContext(), R.layout.grid_item_poster, list);
         grid.setAdapter(adapter);
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent detailIntent = new Intent(getContext(), DetailActivity.class);
+                detailIntent.putExtra("movieId", adapter.getItem(position).getMovieId());
+                startActivity(detailIntent);
+            }
+        });
         return rootView;
     }
 
