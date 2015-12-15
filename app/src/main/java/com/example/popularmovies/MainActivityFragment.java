@@ -1,19 +1,25 @@
 package com.example.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
+import com.example.popularmovies.com.example.popularmovies.tmdb.MoviePoster;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,12 +42,8 @@ public class MainActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ArrayList<String> list = new ArrayList<String>(5);
-        list.add("Test");
-        list.add("Test");
-        list.add("Test");
+        ArrayList<MoviePoster> list = new ArrayList<MoviePoster>(0);
         GridView grid = (GridView)rootView.findViewById(R.id.grid_posters);
-
         adapter = new PosterListAdapter(getContext(), R.layout.grid_item_poster, list);
         grid.setAdapter(adapter);
         return rootView;
@@ -53,16 +55,10 @@ public class MainActivityFragment extends Fragment {
         new MovieListTask(adapter).execute();
     }
 
-    public class PosterListAdapter extends ArrayAdapter<String> {
-
-
+    public class PosterListAdapter extends ArrayAdapter<MoviePoster> {
         private final String LOG_TAG = PosterListAdapter.class.getSimpleName();
 
-        public PosterListAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        public PosterListAdapter(Context context, int resource, List<String> list) {
+        public PosterListAdapter(Context context, int resource, List<MoviePoster> list) {
             super(context, resource, list);
         }
 
@@ -77,7 +73,7 @@ public class MainActivityFragment extends Fragment {
                 v = vi.inflate(R.layout.grid_item_poster, null);
                 ImageView imgView = (ImageView)v;
 
-                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/" + getItem(position))).into(imgView);
+                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/" + getItem(position).getPosterPath())).into(imgView);
             }
 
             return v;

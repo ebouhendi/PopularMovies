@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 
+import com.example.popularmovies.com.example.popularmovies.tmdb.MoviePoster;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,12 +20,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by eb2894 on 2015-12-14.
  */
-public class MovieListTask extends AsyncTask<Void, Void, String[]> {
+public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
 
     private static final String LOG_TAG = MovieListTask.class.getSimpleName();
     private MainActivityFragment.PosterListAdapter adapter;
@@ -34,7 +38,7 @@ public class MovieListTask extends AsyncTask<Void, Void, String[]> {
 
 
     @Override
-    protected String[] doInBackground(Void... params) {
+    protected List<MoviePoster> doInBackground(Void... params) {
 
         final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
         final String PAGE_PARAM = "page";
@@ -105,15 +109,17 @@ public class MovieListTask extends AsyncTask<Void, Void, String[]> {
         return result;
     }
 
-    private String[] parseJsonList(String jsonStr) {
+    private List<MoviePoster> parseJsonList(String jsonStr) {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonStr);
 
             JSONArray moviesArray = jsonObject.getJSONArray("results");
-            String[] result = new String[moviesArray.length()];
+            List<MoviePoster> result = new ArrayList<>(moviesArray.length());
             for (int i = 0; i< moviesArray.length(); i++) {
-                result[i] = moviesArray.getJSONObject(i).getString("poster_path");
+                JSONObject movie = moviesArray.getJSONObject(i);
+                MoviePoster poster = new MoviePoster(movie.getInt("id"), movie.getString("poster_path"));
+                result.add(poster);
             }
 
             return result;
@@ -121,13 +127,12 @@ public class MovieListTask extends AsyncTask<Void, Void, String[]> {
             Log.e(LOG_TAG, "Error in JSON parsing", e);
         }
 
-        return new String[0];
+        return new ArrayList<>(0);
     }
 
     @Override
-    protected void onPostExecute(String[] result) {
-        adapter.addAll(Arrays.asList(result));
+    protected void onPostExecute(List<MoviePoster> result) {
         super.onPostExecute(result);
-
+        adapter.addAll(result);
     }
 }
