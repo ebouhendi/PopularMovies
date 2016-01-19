@@ -5,7 +5,7 @@ package com.example.popularmovies.tmdb;
  */
 public class MovieDetail {
     private String title;
-    private String releaseDate;
+    private String releaseYear;
     private String posterPath;
 
     public void setTitle(String title) {
@@ -16,12 +16,12 @@ public class MovieDetail {
         return title;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setReleaseYear(String releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public String getReleaseYear() {
+        return releaseYear;
     }
 
     public void setPosterPath(String postrPath) {

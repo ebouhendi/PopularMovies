@@ -77,6 +77,11 @@ public class MainActivityFragment extends Fragment {
 
                 Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
                         + getItem(position).getPosterPath())).into(imgView);
+            } else {
+                ImageView imgView = (ImageView)v;
+
+                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
+                        + getItem(position).getPosterPath())).into(imgView);
             }
 
             return v;

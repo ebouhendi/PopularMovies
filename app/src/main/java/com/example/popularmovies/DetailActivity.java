@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.popularmovies.tmdb.MovieDetail;
 import com.example.popularmovies.util.HttpClient;
@@ -47,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView releaseDateTextView = (TextView)findViewById(R.id.detail_text_release_date);
         TextView titleTextView = (TextView)findViewById(R.id.detail_text_title);
 
-        releaseDateTextView.setText(movieDetail.getReleaseDate());
+        releaseDateTextView.setText(movieDetail.getReleaseYear());
         titleTextView.setText(movieDetail.getTitle());
         Picasso.with(this).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
                 + movieDetail.getPosterPath())).into(posterImage);
@@ -86,7 +85,7 @@ public class DetailActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(result);
                 MovieDetail movie = new MovieDetail();
                 movie.setPosterPath(jsonObject.getString("poster_path"));
-                movie.setReleaseDate(jsonObject.getString("release_date"));
+                movie.setReleaseYear(jsonObject.getString("release_date").substring(0,4));
                 movie.setTitle(jsonObject.getString("original_title"));
                 return movie;
             } catch (JSONException e) {
