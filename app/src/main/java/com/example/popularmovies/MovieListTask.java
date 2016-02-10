@@ -2,7 +2,7 @@ package com.example.popularmovies;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.popularmovies.entities.MoviePoster;
@@ -13,13 +13,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by eb2894 on 2015-12-14.
  */
-public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
+public class MovieListTask extends AsyncTask<String, Void, List<MoviePoster>> {
 
     private static final String LOG_TAG = MovieListTask.class.getSimpleName();
     private MovieListFragment.PosterListAdapter adapter;
@@ -30,15 +33,18 @@ public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
 
 
     @Override
-    protected List<MoviePoster> doInBackground(Void... params) {
-
+    protected List<MoviePoster> doInBackground(String... params) {
         final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
         final String PAGE_PARAM = "page";
         final String APPID_PARAM = "api_key";
+        final String SORT_PARAM = "sort_by";
+        final String LAST_RELEASE_DATE_PARAM = "primary_release_date.lte";
 
         Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                 .appendQueryParameter(PAGE_PARAM, Integer.toString(1))
                 .appendQueryParameter(APPID_PARAM, "9ba004b4995bf150034752ff19f040d7")
+                .appendQueryParameter(SORT_PARAM, params[0])
+                .appendQueryParameter(LAST_RELEASE_DATE_PARAM, getCurrentDateString())
                 .build();
 
         try {
@@ -56,7 +62,11 @@ public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
         return null;
     }
 
-
+    private String getCurrentDateString() {
+        DateFormat dateFormat = new DateFormat();
+        Date date = new Date();
+        return dateFormat.format("yyyy-MM-dd", date).toString();
+    }
 
     private List<MoviePoster> parseJsonList(String jsonStr) {
         JSONObject jsonObject = null;
@@ -78,6 +88,8 @@ public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
 
         return new ArrayList<>(0);
     }
+
+
 
     @Override
     protected void onPostExecute(List<MoviePoster> result) {

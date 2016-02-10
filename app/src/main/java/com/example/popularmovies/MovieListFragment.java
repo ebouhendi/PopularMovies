@@ -3,6 +3,7 @@ package com.example.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -59,6 +60,25 @@ public class MovieListFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i(LOG_TAG, String.format("Option with itemId %s selected",item.getItemId()));
+
+        if(item.getItemId() == R.id.action_orderby_rank) {
+            adapter.clear();
+            new MovieListTask(adapter).execute("popularity.desc");
+            Log.i(LOG_TAG, "Order by rank");
+        }
+
+        if(item.getItemId() == R.id.action_orderby_date) {
+            adapter.clear();
+            new MovieListTask(adapter).execute("release_date.desc");
+            Log.i(LOG_TAG, "Order by rank");
+        }
+
+        return true;
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_movie_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -68,7 +88,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        new MovieListTask(adapter).execute();
+        new MovieListTask(adapter).execute("popularity.desc");
     }
 
     public class PosterListAdapter extends ArrayAdapter<MoviePoster> {
