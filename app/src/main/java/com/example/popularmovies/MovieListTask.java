@@ -22,9 +22,9 @@ import java.util.List;
 public class MovieListTask extends AsyncTask<Void, Void, List<MoviePoster>> {
 
     private static final String LOG_TAG = MovieListTask.class.getSimpleName();
-    private MainActivityFragment.PosterListAdapter adapter;
+    private MovieListFragment.PosterListAdapter adapter;
 
-    public MovieListTask(MainActivityFragment.PosterListAdapter adapter) {
+    public MovieListTask(MovieListFragment.PosterListAdapter adapter) {
         this.adapter = adapter;
     }
 

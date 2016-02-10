@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +28,7 @@ import java.util.List;
  */
 public class MovieListFragment extends Fragment {
 
+    private static final String LOG_TAG = MovieListFragment.class.getSimpleName();
     private PosterListAdapter adapter;
 
     public MovieListFragment() {
@@ -32,7 +37,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String LOG_TAG = MovieListFragment.class.getSimpleName();
+
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -48,7 +53,16 @@ public class MovieListFragment extends Fragment {
                 startActivity(detailIntent);
             }
         });
+
+        setHasOptionsMenu(true);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_movie_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override
