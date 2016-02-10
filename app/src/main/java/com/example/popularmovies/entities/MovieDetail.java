@@ -1,4 +1,4 @@
-package com.example.popularmovies.tmdb;
+package com.example.popularmovies.entities;
 
 /**
  * Created by eb2894 on 2015-12-15.

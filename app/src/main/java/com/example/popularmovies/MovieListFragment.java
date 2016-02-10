@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.example.popularmovies.tmdb.MoviePoster;
+import com.example.popularmovies.entities.MoviePoster;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,17 +22,17 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MovieListFragment extends Fragment {
 
     private PosterListAdapter adapter;
 
-    public MainActivityFragment() {
+    public MovieListFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String LOG_TAG = MainActivityFragment.class.getSimpleName();
+        final String LOG_TAG = MovieListFragment.class.getSimpleName();
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -66,24 +66,16 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             View v = convertView;
-
             if (v == null) {
                 LayoutInflater vi;
                 vi = LayoutInflater.from(getContext());
                 v = vi.inflate(R.layout.grid_item_poster, null);
-                ImageView imgView = (ImageView)v;
-
-                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
-                        + getItem(position).getPosterPath())).into(imgView);
-            } else {
-                ImageView imgView = (ImageView)v;
-
-                Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
-                        + getItem(position).getPosterPath())).into(imgView);
             }
 
+            ImageView imgView = (ImageView)v;
+            Picasso.with(getContext()).load(Uri.parse("http://image.tmdb.org/t/p/w185/"
+                    + getItem(position).getPosterPath())).into(imgView);
             return v;
         }
 

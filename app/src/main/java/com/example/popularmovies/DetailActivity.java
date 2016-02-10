@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.popularmovies.tmdb.MovieDetail;
+import com.example.popularmovies.entities.MovieDetail;
 import com.example.popularmovies.util.HttpClient;
 import com.squareup.picasso.Picasso;
 
