@@ -31,6 +31,7 @@ public class MovieListFragment extends Fragment {
 
     private static final String LOG_TAG = MovieListFragment.class.getSimpleName();
     private PosterListAdapter adapter;
+    private String orderString;
 
     public MovieListFragment() {
     }
@@ -38,7 +39,6 @@ public class MovieListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -60,19 +60,31 @@ public class MovieListFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("Order", orderString);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState != null) {
+            orderString = savedInstanceState.getString("Order", "popularity.desc") ;
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(LOG_TAG, String.format("Option with itemId %s selected",item.getItemId()));
 
         if(item.getItemId() == R.id.action_orderby_rank) {
-            adapter.clear();
-            new MovieListTask(adapter).execute("popularity.desc");
-            Log.i(LOG_TAG, "Order by rank");
+            orderString = "popularity.desc";
+            refreshList();
         }
 
         if(item.getItemId() == R.id.action_orderby_date) {
-            adapter.clear();
-            new MovieListTask(adapter).execute("release_date.desc");
-            Log.i(LOG_TAG, "Order by rank");
+            orderString= "release_date.desc";
+            refreshList();
         }
 
         return true;
@@ -88,11 +100,16 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        new MovieListTask(adapter).execute("popularity.desc");
+        refreshList();
+    }
+
+    private void refreshList() {
+        adapter.clear();
+        new MovieListTask(adapter).execute(orderString);
     }
 
     public class PosterListAdapter extends ArrayAdapter<MoviePoster> {
-        private final String LOG_TAG = PosterListAdapter.class.getSimpleName();
+
 
         public PosterListAdapter(Context context, int resource, List<MoviePoster> list) {
             super(context, resource, list);
